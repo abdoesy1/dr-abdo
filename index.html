@@ -4,12 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr_Abdo | YouTuber & Designer</title>
+    
+    <!-- Anti-DevTools & Code Protection System -->
+    <script>
+        // 1. Disable Right-Click to prevent Inspect Element
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // 2. Disable Keyboard Shortcuts for DevTools
+        document.addEventListener('keydown', event => {
+            if (
+                event.keyCode === 123 || // F12
+                (event.ctrlKey && event.shiftKey && (event.keyCode === 73 || event.keyCode === 74 || event.keyCode === 67)) || // Ctrl+Shift+I / J / C
+                (event.ctrlKey && event.keyCode === 85) // Ctrl+U (View Source Code)
+            ) {
+                event.preventDefault();
+                window.location.replace("about:blank");
+            }
+        });
+
+        // 3. Size-based DevTools Detection (If Docked)
+        const checkDevToolsSize = () => {
+            const threshold = 160;
+            const widthDiff = window.outerWidth - window.innerWidth > threshold;
+            const heightDiff = window.outerHeight - window.innerHeight > threshold;
+            
+            if (widthDiff || heightDiff) {
+                window.location.replace("about:blank");
+            }
+        };
+        setInterval(checkDevToolsSize, 1000);
+        window.addEventListener('resize', checkDevToolsSize);
+
+        // 4. Debugger Loop Detection (If DevTools is opened, freeze and redirect instantly)
+        setInterval(function() {
+            const startTime = performance.now();
+            debugger;
+            const endTime = performance.now();
+            if (endTime - startTime > 100) {
+                window.location.replace("about:blank");
+            }
+        }, 500);
+    </script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Inter & Tajawal) -->
+    <!-- Google Fonts (Premium Display, Gaming & Accent Fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;900&family=Orbitron:wght@900&family=Righteous&family=Space+Grotesk:wght@700&family=Syne:wght@800&family=Unbounded:wght@900&family=Cinzel:wght@900&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -146,6 +188,20 @@
             from, to { color: transparent }
             50% { color: #06B6D4; }
         }
+
+        /* Premium Crisp Text Style for Dr_Abdo with Smooth Snappy Transitions */
+        #heroName {
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.25), 0 0 60px rgba(6, 182, 212, 0.15);
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        text-shadow 0.4s ease, 
+                        filter 0.4s ease;
+        }
+        #heroName:hover {
+            text-shadow: 0 0 45px rgba(139, 92, 246, 0.6), 0 0 90px rgba(6, 182, 212, 0.4);
+            transform: scale(1.05) !important;
+            filter: brightness(1.2);
+        }
     </style>
 </head>
 <body class="bg-brand-darker text-gray-100 font-sans overflow-x-hidden min-h-screen relative select-none">
@@ -227,8 +283,12 @@
         <h2 class="text-brand-purple font-extrabold text-lg md:text-xl tracking-widest mb-2 uppercase" id="heroGreeting">
             Hello, World! I am
         </h2>
-        <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tight">
-            <span class="bg-gradient-to-r from-white via-gray-100 to-gray-400 bg-clip-text text-transparent">Dr_Abdo</span>
+        
+        <!-- Premium Font-Changer Dynamic Title Block -->
+        <h1 class="text-6xl md:text-8xl font-black mb-5 tracking-tighter min-h-[100px] md:min-h-[140px] flex items-center justify-center">
+            <span id="heroName" class="bg-gradient-to-r from-brand-purple via-indigo-300 to-brand-cyan bg-clip-text text-transparent inline-block cursor-default select-none font-sans">
+                Dr_Abdo
+            </span>
         </h1>
         
         <!-- Interactive Auto-Typing Role text -->
@@ -580,7 +640,7 @@
                 skillsTitle: "ماذا أفعل",
                 skill1Title: "إنتاج الفيديوهات واليوتيوب",
                 skill1Desc: "صناعة فيديوهات ألعاب حماسية، مخصصة وبشكل أساسي للعبة MooMoo.io. أقوم بإدارة الإنتاج الكامل للفيديو والمونتاج لصناعة محتوى ترفيهي لجمهوري.",
-                barEdit: "موجتاه الفيديوهات",
+                barEdit: "مونتاج الفيديوهات",
                 barThumb: "تصميم الغلاف والمصغرات",
                 skill2Title: "تصميم الجرافيك",
                 skill2Desc: "ابتكار تصاميم عصرية، غلاف قنوات، شعارات مخصصة، ورسم ديجيتال مميز. متخصص بالهويات البصرية وتصميمات السوشيال ميديا.",
@@ -682,6 +742,40 @@
     </script>
 
     <script>
+        // Premium Google Fonts List to Cycle Through for "Dr_Abdo" Name
+        const premiumFontsList = [
+            '"Orbitron", sans-serif',      // Sci-Fi Gaming Look
+            '"Righteous", cursive',       // Flowing Smooth Design Accent
+            '"Space Grotesk", sans-serif',// Minimal Modern Tech Style
+            '"Syne", sans-serif',         // Extra Wide Dynamic Design
+            '"Unbounded", sans-serif',    // Bold Glowing Heavy Header
+            '"Cinzel", serif',            // Majestic Historical Serif Logo Look
+            '"Inter", sans-serif'         // Premium Standard Neo-Grotesque
+        ];
+        let fontIdx = 0;
+
+        function cycleHeroFont() {
+            const heroName = document.getElementById('heroName');
+            if (heroName) {
+                // Smooth Cinematic Transition Out
+                heroName.style.opacity = '0';
+                heroName.style.transform = 'scale(0.94)';
+                
+                setTimeout(() => {
+                    fontIdx = (fontIdx + 1) % premiumFontsList.length;
+                    // Swap to the next premium font
+                    heroName.style.fontFamily = premiumFontsList[fontIdx];
+                    
+                    // Smooth Cinematic Transition In
+                    heroName.style.opacity = '1';
+                    heroName.style.transform = 'scale(1)';
+                }, 300); // Wait for transition duration
+            }
+        }
+
+        // Set Interval to cycle every 2.2 seconds safely
+        setInterval(cycleHeroFont, 2200);
+
         // Typing Effect Configurations
         const roles = {
             en: ["MooMoo.io YouTuber", "Graphic Designer", "Community Builder"],
