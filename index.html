@@ -343,7 +343,7 @@
                 <p class="text-sm text-gray-400" id="aboutCard2Desc">Proudly showcasing Egyptian digital art & creative ideas to the world.</p>
             </div>
 
-            <!-- Fact Card 3: Experience -->
+            <!-- Fact Card 3: Passion -->
             <div class="glass p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 glass-hover">
                 <div class="w-14 h-14 rounded-xl bg-brand-pink/10 border border-brand-pink/20 flex items-center justify-center mb-6">
                     <i class="fa-solid fa-wand-magic-sparkles text-2xl text-brand-pink"></i>
@@ -445,7 +445,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Stat Box 1: YouTube -->
+            <!-- Stat Box 1: YouTube (Live Fetch) -->
             <div class="glass p-8 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden group border border-brand-youtube/20 hover:border-brand-youtube/50 hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-300">
                 <div class="absolute inset-0 bg-gradient-to-b from-brand-youtube/5 to-transparent pointer-events-none"></div>
                 <div class="w-16 h-16 rounded-full bg-brand-youtube/10 flex items-center justify-center mb-4">
@@ -455,21 +455,21 @@
                 
                 <!-- Live Counter Numbers -->
                 <div class="flex items-baseline gap-1 my-2">
-                    <span id="ytCounter" class="text-5xl font-black text-white tracking-tight">42,350</span>
-                    <span class="text-xs font-semibold text-brand-cyan animate-ping">●</span>
+                    <span id="ytCounter" class="text-5xl font-black text-white tracking-tight">42,400</span>
+                    <span id="ytLivePing" class="text-xs font-semibold text-brand-cyan animate-ping">●</span>
                 </div>
                 
                 <p class="text-sm text-gray-400 mb-4" id="statCardYTDesc">Subscribed and counting. Road to 50K!</p>
                 <div class="w-full bg-white/5 rounded-full h-2.5 overflow-hidden">
-                    <div class="bg-gradient-to-r from-brand-youtube to-brand-pink h-full rounded-full animate-pulse" style="width: 84.7%"></div>
+                    <div id="ytProgress" class="bg-gradient-to-r from-brand-youtube to-brand-pink h-full rounded-full transition-all duration-1000 animate-pulse" style="width: 84.8%"></div>
                 </div>
                 <div class="flex justify-between w-full text-[10px] font-semibold text-gray-500 mt-1.5">
-                    <span>42K</span>
+                    <span>40K</span>
                     <span id="statGoal">Goal: 50K</span>
                 </div>
             </div>
 
-            <!-- Stat Box 2: Discord -->
+            <!-- Stat Box 2: Discord (Live Fetch) -->
             <div class="glass p-8 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden group border border-brand-discord/20 hover:border-brand-discord/50 hover:shadow-[0_0_30px_rgba(88,101,242,0.15)] transition-all duration-300">
                 <div class="absolute inset-0 bg-gradient-to-b from-brand-discord/5 to-transparent pointer-events-none"></div>
                 <div class="w-16 h-16 rounded-full bg-brand-discord/10 flex items-center justify-center mb-4">
@@ -479,13 +479,13 @@
                 
                 <!-- Live Counter Numbers -->
                 <div class="flex items-baseline gap-1 my-2">
-                    <span id="dcCounter" class="text-5xl font-black text-white tracking-tight">1,280</span>
-                    <span class="text-xs font-semibold text-emerald-400 animate-ping">●</span>
+                    <span id="dcCounter" class="text-5xl font-black text-white tracking-tight">1,350</span>
+                    <span id="dcLivePing" class="text-xs font-semibold text-emerald-400 animate-ping">●</span>
                 </div>
                 
                 <p class="text-sm text-gray-400 mb-4" id="statCardDCDesc">Active Gamers & Creators Online.</p>
                 <div class="w-full bg-white/5 rounded-full h-2.5 overflow-hidden">
-                    <div class="bg-gradient-to-r from-brand-discord to-brand-cyan h-full rounded-full animate-pulse" style="width: 64%"></div>
+                    <div id="dcProgress" class="bg-gradient-to-r from-brand-discord to-brand-cyan h-full rounded-full transition-all duration-1000 animate-pulse" style="width: 67.5%"></div>
                 </div>
                 <div class="flex justify-between w-full text-[10px] font-semibold text-gray-500 mt-1.5">
                     <span>1,000</span>
@@ -874,7 +874,9 @@
                 charIndex++;
             }
 
-            typedRoleElement.textContent = currentRole.substring(0, charIndex);
+            if (typedRoleElement) {
+                typedRoleElement.textContent = currentRole.substring(0, charIndex);
+            }
 
             let delay = isDeleting ? erasingDelay : typingDelay;
 
@@ -890,60 +892,110 @@
             setTimeout(typeEffect, delay);
         }
 
-        // Live Counters Engine (Dynamic Counting and live fluctuating updates)
-        let ytSubCount = 42350;
-        let dcMemCount = 1280;
+        // Default Fallbacks in case APIs fail
+        let liveYTCount = 42400; 
+        let liveDCCount = 1350;
 
-        function animateCounters() {
-            const targetYT = 42482; // Animated start target
-            const targetDC = 1342;  // Animated start target
+        async function updateLiveStats() {
             const ytEl = document.getElementById('ytCounter');
             const dcEl = document.getElementById('dcCounter');
+            const ytProgress = document.getElementById('ytProgress');
+            const dcProgress = document.getElementById('dcProgress');
 
-            let currentYT = 41000;
-            let currentDC = 1000;
+            // 1. Fetch Real-Time Discord Server Members Count via public widget API
+            try {
+                // Discord invite endpoint with counts is open & handles CORS natively
+                let dcResp = await fetch("https://discord.com/api/v9/invites/ZzrpDvMFJK?with_counts=true");
+                if (!dcResp.ok) {
+                    // Try fallback proxy if blocked or failed
+                    dcResp = await fetch("https://corsproxy.io/?url=" + encodeURIComponent("https://discord.com/api/v9/invites/ZzrpDvMFJK?with_counts=true"));
+                }
+                const dcData = await dcResp.json();
+                if (dcData && dcData.approximate_member_count) {
+                    liveDCCount = dcData.approximate_member_count;
+                    console.log("Live Discord Members loaded:", liveDCCount);
+                }
+            } catch (err) {
+                console.warn("Could not load live Discord counts, using fallback", err);
+            }
 
-            const incrementYT = Math.ceil((targetYT - currentYT) / 60);
-            const incrementDC = Math.ceil((targetDC - currentDC) / 60);
+            // 2. Fetch Real-Time YouTube Subscribers Count from public channel scrapers via CORS proxy
+            try {
+                // Fetch the actual channel HTML via an open CORS Proxy
+                const ytResp = await fetch("https://corsproxy.io/?url=" + encodeURIComponent("https://www.youtube.com/@Dr-Abdo123"));
+                const htmlText = await ytResp.text();
 
-            const counterInterval = setInterval(() => {
-                if (currentYT < targetYT) {
-                    currentYT += incrementYT;
-                    if (currentYT >= targetYT) currentYT = targetYT;
-                    ytEl.textContent = Number(currentYT).toLocaleString();
+                // Look for standard youtube SEO subscriberCount meta tag inside raw HTML
+                const metaMatch = htmlText.match(/itemprop="subscriberCount"\s+content="([^"]+)"/i) || 
+                                  htmlText.match(/content="([^"]+)"\s+itemprop="subscriberCount"/i);
+                
+                if (metaMatch && metaMatch[1]) {
+                    const parsedCount = parseInt(metaMatch[1], 10);
+                    if (!isNaN(parsedCount) && parsedCount > 0) {
+                        liveYTCount = parsedCount;
+                        console.log("Live YouTube Subscribers loaded:", liveYTCount);
+                    }
+                } else {
+                    // Fallback to searching JSON properties in ytInitialData inside HTML
+                    const jsonMatch = htmlText.match(/"subscriberCountText"\s*:\s*\{\s*"accessibility"\s*:\s*\{\s*"accessibilityData"\s*:\s*\{\s*"label"\s*:\s*"([^"]+)"/i) ||
+                                      htmlText.match(/"subscriberCountText"\s*:\s*\{\s*"simpleText"\s*:\s*"([^"]+)"/i);
+                    if (jsonMatch && jsonMatch[1]) {
+                        // This might be something like "42.4K subscribers" or "42.4K مشترك"
+                        const cleanStr = jsonMatch[1].replace(/[^0-9.]/g, '');
+                        const parsedFloat = parseFloat(cleanStr);
+                        if (!isNaN(parsedFloat)) {
+                            // If it has 'K' or 'M' in original string, multiply accordingly
+                            if (jsonMatch[1].toLowerCase().includes('k')) {
+                                liveYTCount = Math.floor(parsedFloat * 1000);
+                            } else if (jsonMatch[1].toLowerCase().includes('m')) {
+                                liveYTCount = Math.floor(parsedFloat * 1000000);
+                            } else {
+                                liveYTCount = Math.floor(parsedFloat);
+                            }
+                            console.log("Live YouTube Subscribers loaded (from json fallback):", liveYTCount);
+                        }
+                    }
                 }
-                if (currentDC < targetDC) {
-                    currentDC += incrementDC;
-                    if (currentDC >= targetDC) currentDC = targetDC;
-                    dcEl.textContent = Number(currentDC).toLocaleString();
-                }
-                if (currentYT >= targetYT && currentDC >= targetDC) {
-                    clearInterval(counterInterval);
-                    ytSubCount = targetYT;
-                    dcMemCount = targetDC;
-                    // Trigger live pulse fluctuations
-                    setInterval(liveFluctuations, 4000);
-                }
-            }, 20);
+            } catch (err) {
+                console.warn("Could not load live YouTube counts, using fallback", err);
+            }
+
+            // 3. Smooth Counter Counting Animation
+            animateCount(ytEl, 1000, liveYTCount);
+            animateCount(dcEl, 1000, liveDCCount);
+
+            // 4. Update progress bars smoothly based on the real loaded figures
+            if (ytProgress) {
+                // Base target: Goal is 50K
+                const percentYT = Math.min(100, (liveYTCount / 50000) * 100);
+                ytProgress.style.width = percentYT + "%";
+            }
+            if (dcProgress) {
+                // Base target: Goal is 2K
+                const percentDC = Math.min(100, (liveDCCount / 2000) * 100);
+                dcProgress.style.width = percentDC + "%";
+            }
         }
 
-        // Live updating simulation: occasionally adds/removes 1 or 2 users to look fully alive
-        function liveFluctuations() {
-            const ytEl = document.getElementById('ytCounter');
-            const dcEl = document.getElementById('dcCounter');
+        // Animation Helper function
+        function animateCount(element, duration, targetValue) {
+            if (!element) return;
+            const startValue = Math.floor(targetValue * 0.9); // Start counting from 90%
+            const range = targetValue - startValue;
+            let current = startValue;
+            const stepTime = Math.max(Math.floor(duration / range), 15);
             
-            // Randomly fluctuate YT (+1 to +3 occasionally)
-            const ytChange = Math.floor(Math.random() * 4); 
-            ytSubCount += ytChange;
-            ytEl.textContent = ytSubCount.toLocaleString();
-
-            // Randomly fluctuate Discord members (+1, 0, or -1)
-            const dcChange = Math.floor(Math.random() * 3) - 1; 
-            dcMemCount += dcChange;
-            dcEl.textContent = dcMemCount.toLocaleString();
+            const timer = setInterval(() => {
+                current += Math.ceil(range / 40);
+                if (current >= targetValue) {
+                    element.textContent = Number(targetValue).toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Number(current).toLocaleString();
+                }
+            }, stepTime);
         }
 
-        // Interactive Canvas Particle Engine 
         let canvas, ctx;
         let particlesArray = [];
         const mouse = {
@@ -1100,8 +1152,11 @@
             // Initiate Typing Role sequence
             setTimeout(typeEffect, 1000);
 
-            // Initiate Counter Animation
-            setTimeout(animateCounters, 800);
+            // Fetch and load Live Stats from Actual APIs (YouTube & Discord)
+            updateLiveStats();
+
+            // Refresh live stats every 60 seconds automatically
+            setInterval(updateLiveStats, 60000);
 
             // Adjust canvas size periodically to fit layout expansions
             setInterval(resizeCanvas, 1500);
