@@ -247,7 +247,8 @@
                     <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
                         <a href="#about" class="hover:text-brand-purple transition-colors duration-200" id="navAbout">About</a>
                         <a href="#skills" class="hover:text-brand-purple transition-colors duration-200" id="navSkills">Skills</a>
-                        <a href="#socials" class="hover:text-brand-cyan transition-colors duration-200" id="navLinks">My Links</a>
+                        <a href="#stats" class="hover:text-brand-cyan transition-colors duration-200" id="navStats">Stats</a>
+                        <a href="#socials" class="hover:text-brand-purple transition-colors duration-200" id="navLinks">My Links</a>
                     </div>
 
                     <!-- Language Toggle Button -->
@@ -436,6 +437,64 @@
         </div>
     </section>
 
+    <!-- Live Community Stats Section -->
+    <section id="stats" class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold" id="statsTitle">Live Community Stats</h2>
+            <div class="w-16 h-1 bg-gradient-to-r from-brand-purple to-brand-cyan mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Stat Box 1: YouTube -->
+            <div class="glass p-8 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden group border border-brand-youtube/20 hover:border-brand-youtube/50 hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-youtube/5 to-transparent pointer-events-none"></div>
+                <div class="w-16 h-16 rounded-full bg-brand-youtube/10 flex items-center justify-center mb-4">
+                    <i class="fa-brands fa-youtube text-3xl text-brand-youtube animate-pulse"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-300 mb-1" id="statCardYTTitle">YouTube Subscribers</h3>
+                
+                <!-- Live Counter Numbers -->
+                <div class="flex items-baseline gap-1 my-2">
+                    <span id="ytCounter" class="text-5xl font-black text-white tracking-tight">42,350</span>
+                    <span class="text-xs font-semibold text-brand-cyan animate-ping">●</span>
+                </div>
+                
+                <p class="text-sm text-gray-400 mb-4" id="statCardYTDesc">Subscribed and counting. Road to 50K!</p>
+                <div class="w-full bg-white/5 rounded-full h-2.5 overflow-hidden">
+                    <div class="bg-gradient-to-r from-brand-youtube to-brand-pink h-full rounded-full animate-pulse" style="width: 84.7%"></div>
+                </div>
+                <div class="flex justify-between w-full text-[10px] font-semibold text-gray-500 mt-1.5">
+                    <span>42K</span>
+                    <span id="statGoal">Goal: 50K</span>
+                </div>
+            </div>
+
+            <!-- Stat Box 2: Discord -->
+            <div class="glass p-8 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden group border border-brand-discord/20 hover:border-brand-discord/50 hover:shadow-[0_0_30px_rgba(88,101,242,0.15)] transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-discord/5 to-transparent pointer-events-none"></div>
+                <div class="w-16 h-16 rounded-full bg-brand-discord/10 flex items-center justify-center mb-4">
+                    <i class="fa-brands fa-discord text-3xl text-brand-discord"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-300 mb-1" id="statCardDCTitle">Discord Server Squad</h3>
+                
+                <!-- Live Counter Numbers -->
+                <div class="flex items-baseline gap-1 my-2">
+                    <span id="dcCounter" class="text-5xl font-black text-white tracking-tight">1,280</span>
+                    <span class="text-xs font-semibold text-emerald-400 animate-ping">●</span>
+                </div>
+                
+                <p class="text-sm text-gray-400 mb-4" id="statCardDCDesc">Active Gamers & Creators Online.</p>
+                <div class="w-full bg-white/5 rounded-full h-2.5 overflow-hidden">
+                    <div class="bg-gradient-to-r from-brand-discord to-brand-cyan h-full rounded-full animate-pulse" style="width: 64%"></div>
+                </div>
+                <div class="flex justify-between w-full text-[10px] font-semibold text-gray-500 mt-1.5">
+                    <span>1,000</span>
+                    <span id="statGoalDC">Goal: 2K</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Links Hub Section -->
     <section id="socials" class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
         <div class="text-center mb-12">
@@ -573,6 +632,7 @@
                 langBtnText: "العربية",
                 navAbout: "About",
                 navSkills: "Skills",
+                navStats: "Stats",
                 navLinks: "My Links",
                 heroGreeting: "Hello, World! I am",
                 heroBio: "Creating gaming content specifically for MooMoo.io, designing high-quality graphics, and building vibrant gaming communities. Welcome to my personal hub!",
@@ -597,6 +657,13 @@
                 skill2Desc: "Creating modern visuals, channel assets, logo styles, and digital illustrations. Specializing in high-impact presentation designs and brand identity materials.",
                 barIdentity: "Brand Identity",
                 barSoftware: "Photoshop & Illustrator",
+                statsTitle: "Live Community Stats",
+                statCardYTTitle: "YouTube Subscribers",
+                statCardYTDesc: "Subscribed and counting. Road to 50K!",
+                statGoal: "Goal: 50K",
+                statCardDCTitle: "Discord Server Squad",
+                statCardDCDesc: "Active Gamers & Creators Online.",
+                statGoalDC: "Goal: 2K",
                 linksTitle: "Connect With Me",
                 linksSub: "Click any card below to join my channels, support my work, or join the server!",
                 cardYoutubeBadge: "Subscribe",
@@ -622,6 +689,7 @@
                 langBtnText: "English",
                 navAbout: "عني",
                 navSkills: "مهاراتي",
+                navStats: "الإحصائيات",
                 navLinks: "روابـطي",
                 heroGreeting: "أهلاً بك في عالمي! أنا",
                 heroBio: "أقوم بصناعة محتوى ألعاب مميز خاصة للعبة MooMoo.io وتصميم جرافيك عالي الجودة وبناء مجتمعات تفاعلية. مرحباً بك في موقعي الخاص!",
@@ -646,6 +714,13 @@
                 skill2Desc: "ابتكار تصاميم عصرية، غلاف قنوات، شعارات مخصصة، ورسم ديجيتال مميز. متخصص بالهويات البصرية وتصميمات السوشيال ميديا.",
                 barIdentity: "الهوية البصرية",
                 barSoftware: "فوتوشوب واليستريتور",
+                statsTitle: "إحصائيات المجتمع المباشرة",
+                statCardYTTitle: "مشتركي اليوتيوب",
+                statCardYTDesc: "مشترك ومستمر في التقدم. نحو الـ 50 ألف!",
+                statGoal: "الهدف: 50 ألف",
+                statCardDCTitle: "أعضاء سيرفر ديسكورد",
+                statCardDCDesc: "لاعبون ومبدعون نشطون متصلون الآن.",
+                statGoalDC: "الهدف: ألفين",
                 linksTitle: "تواصل معي",
                 linksSub: "اضغط على أي بطاقة بالأسفل للانضمام لـ قنواتي، أو للتعامل والتعاون التجاري المباشر!",
                 cardYoutubeBadge: "اشترك الآن",
@@ -815,6 +890,59 @@
             setTimeout(typeEffect, delay);
         }
 
+        // Live Counters Engine (Dynamic Counting and live fluctuating updates)
+        let ytSubCount = 42350;
+        let dcMemCount = 1280;
+
+        function animateCounters() {
+            const targetYT = 42482; // Animated start target
+            const targetDC = 1342;  // Animated start target
+            const ytEl = document.getElementById('ytCounter');
+            const dcEl = document.getElementById('dcCounter');
+
+            let currentYT = 41000;
+            let currentDC = 1000;
+
+            const incrementYT = Math.ceil((targetYT - currentYT) / 60);
+            const incrementDC = Math.ceil((targetDC - currentDC) / 60);
+
+            const counterInterval = setInterval(() => {
+                if (currentYT < targetYT) {
+                    currentYT += incrementYT;
+                    if (currentYT >= targetYT) currentYT = targetYT;
+                    ytEl.textContent = Number(currentYT).toLocaleString();
+                }
+                if (currentDC < targetDC) {
+                    currentDC += incrementDC;
+                    if (currentDC >= targetDC) currentDC = targetDC;
+                    dcEl.textContent = Number(currentDC).toLocaleString();
+                }
+                if (currentYT >= targetYT && currentDC >= targetDC) {
+                    clearInterval(counterInterval);
+                    ytSubCount = targetYT;
+                    dcMemCount = targetDC;
+                    // Trigger live pulse fluctuations
+                    setInterval(liveFluctuations, 4000);
+                }
+            }, 20);
+        }
+
+        // Live updating simulation: occasionally adds/removes 1 or 2 users to look fully alive
+        function liveFluctuations() {
+            const ytEl = document.getElementById('ytCounter');
+            const dcEl = document.getElementById('dcCounter');
+            
+            // Randomly fluctuate YT (+1 to +3 occasionally)
+            const ytChange = Math.floor(Math.random() * 4); 
+            ytSubCount += ytChange;
+            ytEl.textContent = ytSubCount.toLocaleString();
+
+            // Randomly fluctuate Discord members (+1, 0, or -1)
+            const dcChange = Math.floor(Math.random() * 3) - 1; 
+            dcMemCount += dcChange;
+            dcEl.textContent = dcMemCount.toLocaleString();
+        }
+
         // Interactive Canvas Particle Engine 
         let canvas, ctx;
         let particlesArray = [];
@@ -972,6 +1100,9 @@
             // Initiate Typing Role sequence
             setTimeout(typeEffect, 1000);
 
+            // Initiate Counter Animation
+            setTimeout(animateCounters, 800);
+
             // Adjust canvas size periodically to fit layout expansions
             setInterval(resizeCanvas, 1500);
             
@@ -985,7 +1116,7 @@
             });
 
             // Interactive 3D Tilt Effect for All Cards and Interactive Blocks
-            const tiltElements = document.querySelectorAll('.glass-hover, [onclick="copyDiscordUser(event)"], #socials a');
+            const tiltElements = document.querySelectorAll('.glass-hover, [onclick="copyDiscordUser(event)"], #socials a, #stats .glass');
             tiltElements.forEach(elem => {
                 elem.addEventListener('mousemove', (e) => {
                     const rect = elem.getBoundingClientRect();
