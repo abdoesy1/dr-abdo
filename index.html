@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr_Abdo | YouTuber & Designer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter & Tajawal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',
+                            darker: '#05070C',
+                            purple: '#8B5CF6',
+                            cyan: '#06B6D4',
+                            pink: '#EC4899',
+                            youtube: '#FF0000',
+                            discord: '#5865F2',
+                            paypal: '#00457C'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Tajawal', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.5), 0 0 10px rgba(139, 92, 246, 0.3)' },
+                            '100%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.8), 0 0 30px rgba(6, 182, 212, 0.6)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05070C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8B5CF6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06B6D4;
+        }
+        
+        /* Glassmorphism Classes */
+        .glass {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-hover {
+            will-change: transform;
+        }
+
+        /* Shifting Logo Color & Glow Effects */
+        @keyframes logoColorShift {
+            0% { 
+                color: #8B5CF6; 
+                filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.8));
+            }
+            33% { 
+                color: #EC4899; 
+                filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.8));
+            }
+            66% { 
+                color: #06B6D4; 
+                filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.8));
+            }
+            100% { 
+                color: #8B5CF6; 
+                filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.8));
+            }
+        }
+        .logo-color-shift {
+            animation: logoColorShift 5s infinite linear;
+        }
+        
+        /* Big Hero Logo Shift & Pulse */
+        @keyframes heroLogoColorShift {
+            0% { 
+                color: #8B5CF6; 
+                filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.9)) drop-shadow(0 0 50px rgba(139, 92, 246, 0.4));
+            }
+            33% { 
+                color: #EC4899; 
+                filter: drop-shadow(0 0 25px rgba(236, 72, 153, 0.9)) drop-shadow(0 0 50px rgba(236, 72, 153, 0.4));
+            }
+            66% { 
+                color: #06B6D4; 
+                filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.9)) drop-shadow(0 0 50px rgba(6, 182, 212, 0.4));
+            }
+            100% { 
+                color: #8B5CF6; 
+                filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.9)) drop-shadow(0 0 50px rgba(139, 92, 246, 0.4));
+            }
+        }
+        .hero-logo-shift {
+            animation: heroLogoColorShift 4s infinite ease-in-out;
+        }
+
+        @keyframes logoGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .logo-glow {
+            background-size: 200% 200%;
+            animation: logoGlow 5s ease infinite;
+        }
+    </style>
+</head>
+<body class="bg-brand-darker text-gray-100 font-sans overflow-x-hidden min-h-screen relative">
+
+    <!-- Interactive Background Particles -->
+    <canvas id="particleCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Interactive Mouse Follower Glow (Atmospheric Neon Ambient) -->
+    <div id="mouseGlow" class="fixed w-[450px] h-[450px] bg-gradient-to-r from-brand-purple/15 to-brand-cyan/15 rounded-full blur-[110px] pointer-events-none z-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-75 opacity-0 md:opacity-100"></div>
+
+    <!-- Custom Toast Notification for Clipboard Copying -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
+        <div class="glass border-brand-purple px-6 py-4 rounded-xl flex items-center gap-3 shadow-2xl shadow-brand-purple/20">
+            <i class="fa-brands fa-discord text-brand-cyan text-xl animate-bounce"></i>
+            <span id="toastText" class="text-sm font-semibold text-white"></span>
+        </div>
+    </div>
+
+    <!-- Glowing Background blobs -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-brand-purple/20 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
+    <div class="absolute bottom-40 right-10 w-96 h-96 bg-brand-cyan/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass border-b border-white/5 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="relative group cursor-pointer hover:scale-105 transition-transform duration-300">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-purple via-brand-pink to-brand-cyan rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-500 logo-glow"></div>
+                        <div class="relative bg-brand-darker px-4 py-1 rounded-xl border border-white/10 flex items-center justify-center">
+                            <span class="text-3xl font-extrabold logo-color-shift select-none tracking-normal font-sans">
+                                A
+                            </span>
+                        </div>
+                    </div>
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-ping self-center"></span>
+                </div>
+                
+                <!-- Navigation & Action Buttons -->
+                <div class="flex items-center gap-4">
+                    <!-- Nav links (Desktop) -->
+                    <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                        <a href="#about" class="hover:text-brand-purple transition-colors duration-200" id="navAbout">About</a>
+                        <a href="#skills" class="hover:text-brand-purple transition-colors duration-200" id="navSkills">Skills</a>
+                        <a href="#socials" class="hover:text-brand-cyan transition-colors duration-200" id="navLinks">My Links</a>
+                    </div>
+
+                    <!-- Language Toggle Button -->
+                    <button onclick="toggleLanguage()" class="flex items-center gap-2 px-3 justify-center py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-brand-purple/20 hover:border-brand-purple/50 transition-all duration-300 group shadow-lg">
+                        <i class="fa-solid fa-earth-americas text-brand-cyan group-hover:rotate-45 transition-transform duration-500"></i>
+                        <span id="langBtnText" class="text-xs font-semibold tracking-wider">العربية</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 md:py-32 flex flex-col items-center text-center">
+        <!-- Floating badge/avatar simulation with animated RGB "A" logo -->
+        <div class="relative mb-8 animate-float group cursor-pointer">
+            <div class="absolute -inset-1.5 rounded-full bg-gradient-to-r from-brand-purple via-brand-pink to-brand-cyan blur opacity-80 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 logo-glow"></div>
+            <div class="relative w-36 h-36 md:w-44 md:h-44 rounded-full bg-brand-dark/95 flex items-center justify-center border border-white/15 overflow-hidden shadow-[inset_0_0_25px_rgba(255,255,255,0.05)]">
+                <!-- Rotating energy ring behind the A -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-brand-purple/20 via-transparent to-brand-cyan/20 animate-spin" style="animation-duration: 10s;"></div>
+                <!-- Giant glowing letters "A" shifting color -->
+                <span class="text-7xl md:text-8xl font-black hero-logo-shift select-none tracking-normal font-sans z-10">
+                    A
+                </span>
+            </div>
+            <!-- Online status indicator with ping animation -->
+            <span class="absolute bottom-2 right-2 w-7 h-7 bg-emerald-500 border-4 border-brand-darker rounded-full shadow-lg flex items-center justify-center">
+                <span class="absolute w-full h-full rounded-full bg-emerald-400 animate-ping opacity-75"></span>
+            </span>
+        </div>
+
+        <!-- Greetings & Title -->
+        <h2 class="text-brand-purple font-extrabold text-lg md:text-xl tracking-widest mb-2 uppercase" id="heroGreeting">
+            Hello, World! I am
+        </h2>
+        <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tight">
+            <span class="bg-gradient-to-r from-white via-gray-100 to-gray-400 bg-clip-text text-transparent">Dr_Abdo</span>
+        </h1>
+        
+        <!-- Animated Roles text -->
+        <p class="text-lg md:text-2xl text-gray-300 font-semibold mb-6 flex items-center justify-center gap-3">
+            <span class="text-brand-cyan" id="heroRole1">YouTuber</span> 
+            <span class="text-gray-500">•</span> 
+            <span class="text-brand-pink" id="heroRole2">Designer</span>
+        </p>
+
+        <!-- Brief pitch summary -->
+        <p class="max-w-2xl text-sm md:text-lg text-gray-400 mb-8 leading-relaxed" id="heroBio">
+            Creating gaming content specifically for MooMoo.io, designing high-quality graphics, and building vibrant gaming communities. Welcome to my personal hub!
+        </p>
+
+        <!-- Hero CTA Action buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
+            <a href="#socials" class="flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-brand-purple to-brand-cyan rounded-xl font-bold shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300 text-white" id="ctaBtn1">
+                <i class="fa-solid fa-link"></i>
+                <span>Explore My Links</span>
+            </a>
+            <a href="#about" class="flex items-center justify-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-gray-200" id="ctaBtn2">
+                <i class="fa-solid fa-address-card"></i>
+                <span>Get to Know Me</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold" id="aboutTitle">About Me</h2>
+            <div class="w-16 h-1 bg-gradient-to-r from-brand-purple to-brand-cyan mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            <!-- Fact Card 1: Age -->
+            <div class="glass p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 glass-hover">
+                <div class="w-14 h-14 rounded-xl bg-brand-purple/10 border border-brand-purple/20 flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-cake-candles text-2xl text-brand-purple"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-300 mb-2" id="aboutCard1Title">Age</h3>
+                <p class="text-3xl font-extrabold text-white mb-2" id="aboutCard1Val">20 Years Old</p>
+                <p class="text-sm text-gray-400" id="aboutCard1Desc">Born in the year 2006, full of energy & creativity.</p>
+            </div>
+
+            <!-- Fact Card 2: Location -->
+            <div class="glass p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 glass-hover">
+                <div class="w-14 h-14 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-location-dot text-2xl text-brand-cyan"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-300 mb-2" id="aboutCard2Title">Location</h3>
+                <p class="text-3xl font-extrabold text-white mb-2" id="aboutCard2Val">Egypt</p>
+                <p class="text-sm text-gray-400" id="aboutCard2Desc">Proudly showcasing Egyptian digital art & creative ideas to the world.</p>
+            </div>
+
+            <!-- Fact Card 3: Experience -->
+            <div class="glass p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 glass-hover">
+                <div class="w-14 h-14 rounded-xl bg-brand-pink/10 border border-brand-pink/20 flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-wand-magic-sparkles text-2xl text-brand-pink"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-300 mb-2" id="aboutCard3Title">My Passion</h3>
+                <p class="text-3xl font-extrabold text-white mb-2" id="aboutCard3Val" style="font-size: 1.5rem; line-height: 2rem;">Design & Content</p>
+                <p class="text-sm text-gray-400" id="aboutCard3Desc">Merging outstanding visual graphics with viral video concepts.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills & Roles Section -->
+    <section id="skills" class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold" id="skillsTitle">What I Do</h2>
+            <div class="w-16 h-1 bg-gradient-to-r from-brand-purple to-brand-cyan mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Skill block 1: Video Production -->
+            <div class="glass p-8 rounded-2xl transition-all duration-300 border border-white/5 hover:border-brand-purple/30">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-brand-purple/20 flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="fa-brands fa-youtube text-2xl text-brand-purple animate-pulse"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-white" id="skill1Title">Video Production & YouTube</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4" id="skill1Desc">
+                            Crafting high-energy gaming videos, specialized in MooMoo.io content. Managing full video production, scripting, and advanced editing to build a dedicated fanbase.
+                        </p>
+                        <!-- Progress Bars simulation -->
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span id="barEdit">Video Editing</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                                    <div class="bg-brand-purple h-full rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span id="barThumb">Thumbnail CTR Design</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                                    <div class="bg-brand-purple h-full rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skill block 2: Graphic Design -->
+            <div class="glass p-8 rounded-2xl transition-all duration-300 border border-white/5 hover:border-brand-cyan/30">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/20 flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="fa-solid fa-palette text-2xl text-brand-cyan"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-white" id="skill2Title">Graphic Design</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4" id="skill2Desc">
+                            Creating modern visuals, channel assets, logo styles, and digital illustrations. Specializing in high-impact presentation designs and brand identity materials.
+                        </p>
+                        <!-- Progress Bars simulation -->
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span id="barIdentity">Brand Identity</span>
+                                    <span>95%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                                    <div class="bg-brand-cyan h-full rounded-full" style="width: 95%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span id="barSoftware">Photoshop & Illustrator</span>
+                                    <span>88%</span>
+                                </div>
+                                <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                                    <div class="bg-brand-cyan h-full rounded-full" style="width: 88%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Links Hub Section -->
+    <section id="socials" class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold" id="linksTitle">Connect With Me</h2>
+            <p class="text-gray-400 text-sm md:text-base mt-2" id="linksSub">Click any card below to join my channels, support my work, or join the server!</p>
+            <div class="w-16 h-1 bg-gradient-to-r from-brand-purple to-brand-cyan mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Link Card 1: YouTube -->
+            <a href="https://www.youtube.com/@Dr-Abdo123" target="_blank" rel="noopener noreferrer" class="group relative rounded-2xl overflow-hidden glass p-6 flex flex-col justify-between h-72 transition-all duration-300 hover:scale-[1.02] border-2 border-transparent hover:border-brand-youtube/40 hover:shadow-[0_0_30px_rgba(255,0,0,0.25)]">
+                <!-- Inner Neon Highlight -->
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-youtube/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                
+                <div class="flex justify-between items-start">
+                    <div class="w-14 h-14 rounded-xl bg-brand-youtube/15 flex items-center justify-center text-brand-youtube transition-transform group-hover:scale-110 duration-300">
+                        <i class="fa-brands fa-youtube text-3xl"></i>
+                    </div>
+                    <span class="text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-brand-youtube/10 text-brand-youtube border border-brand-youtube/20" id="cardYoutubeBadge">Subscribe</span>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-black text-white group-hover:text-brand-youtube transition-colors duration-200">YouTube Channel</h3>
+                    <p class="text-gray-400 text-xs mt-1" id="cardYoutubeDesc">Watch legendary MooMoo.io gameplay, updates, strategies, and awesome gaming edits.</p>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm font-semibold text-brand-youtube mt-4">
+                    <span id="cardVisitYT">Visit channel</span>
+                    <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1.5"></i>
+                </div>
+            </a>
+
+            <!-- Link Card 2: Discord Server -->
+            <a href="https://discord.gg/ZzrpDvMFJK" target="_blank" rel="noopener noreferrer" class="group relative rounded-2xl overflow-hidden glass p-6 flex flex-col justify-between h-72 transition-all duration-300 hover:scale-[1.02] border-2 border-transparent hover:border-brand-discord/40 hover:shadow-[0_0_30px_rgba(88,101,242,0.25)]">
+                <!-- Inner Neon Highlight -->
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-discord/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                
+                <div class="flex justify-between items-start">
+                    <div class="w-14 h-14 rounded-xl bg-brand-discord/15 flex items-center justify-center text-brand-discord transition-transform group-hover:scale-110 duration-300">
+                        <i class="fa-brands fa-discord text-3xl"></i>
+                    </div>
+                    <span class="text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-brand-discord/10 text-brand-discord border border-brand-discord/20" id="cardDiscordBadge">Join Server</span>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-black text-white group-hover:text-brand-discord transition-colors duration-200">Discord Server</h3>
+                    <p class="text-gray-400 text-xs mt-1" id="cardDiscordDesc">Hangout with other gamers, designers, and talk directly with Dr_Abdo.</p>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm font-semibold text-brand-discord mt-4">
+                    <span id="cardVisitDiscord">Connect here</span>
+                    <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1.5"></i>
+                </div>
+            </a>
+
+            <!-- Link Card 3: Discord Direct DM -->
+            <button onclick="copyDiscordUser(event)" class="text-left w-full group relative rounded-2xl overflow-hidden glass p-6 flex flex-col justify-between h-72 transition-all duration-300 hover:scale-[1.02] border-2 border-transparent hover:border-brand-purple/40 hover:shadow-[0_0_30px_rgba(139,92,246,0.25)] cursor-pointer">
+                <!-- Inner Neon Highlight -->
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                
+                <div class="flex justify-between items-start w-full">
+                    <div class="w-14 h-14 rounded-xl bg-brand-purple/15 flex items-center justify-center text-brand-purple transition-transform group-hover:scale-110 duration-300">
+                        <i class="fa-solid fa-comments text-3xl"></i>
+                    </div>
+                    <span class="text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-brand-purple/10 text-brand-purple border border-brand-purple/20" id="cardDirectBadge">Chat Direct</span>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-black text-white group-hover:text-brand-purple transition-colors duration-200" id="cardDirectTitle">Discord DM</h3>
+                    <p class="text-gray-400 text-xs mt-1" id="cardDirectDesc">Got a question or want a custom design? Click to copy my username (j9nh) and chat directly with me!</p>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm font-semibold text-brand-purple mt-4">
+                    <span id="cardVisitDirect">Copy & Chat</span>
+                    <i class="fa-solid fa-copy transition-transform group-hover:scale-110"></i>
+                </div>
+            </button>
+
+            <!-- Link Card 4: PayPal -->
+            <a href="https://paypal.me/AbdelrahmanSayed252" target="_blank" rel="noopener noreferrer" class="group relative rounded-2xl overflow-hidden glass p-6 flex flex-col justify-between h-72 transition-all duration-300 hover:scale-[1.02] border-2 border-transparent hover:border-brand-cyan/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.25)]">
+                <!-- Inner Neon Highlight -->
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                
+                <div class="flex justify-between items-start">
+                    <div class="w-14 h-14 rounded-xl bg-brand-cyan/15 flex items-center justify-center text-brand-cyan transition-transform group-hover:scale-110 duration-300">
+                        <i class="fa-brands fa-paypal text-3xl"></i>
+                    </div>
+                    <span class="text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20" id="cardPaypalBadge">Support Me</span>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-black text-white group-hover:text-brand-cyan transition-colors duration-200">PayPal Support</h3>
+                    <p class="text-gray-400 text-xs mt-1" id="cardPaypalDesc">Support my content creation journey and design work directly via tip or donation.</p>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm font-semibold text-brand-cyan mt-4">
+                    <span id="cardVisitPaypal">Send support</span>
+                    <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1.5"></i>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="relative z-10 border-t border-white/5 py-12 bg-brand-darker">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <p class="text-gray-500 text-sm" id="footerText">
+                &copy; 2026 Dr_Abdo. All Rights Reserved. Powered by design passion.
+            </p>
+            
+            <!-- Fast social links footer -->
+            <div class="flex items-center gap-4">
+                <a href="https://www.youtube.com/@Dr-Abdo123" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-youtube hover:text-white transition-all duration-300 hover:-translate-y-1">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://discord.gg/ZzrpDvMFJK" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-discord hover:text-white transition-all duration-300 hover:-translate-y-1">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+                <a href="https://paypal.me/AbdelrahmanSayed252" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-cyan hover:text-white transition-all duration-300 hover:-translate-y-1">
+                    <i class="fa-brands fa-paypal"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language state variables
+        let currentLanguage = 'en';
+
+        // Translation Dictionary
+        const translations = {
+            en: {
+                langBtnText: "العربية",
+                navAbout: "About",
+                navSkills: "Skills",
+                navLinks: "My Links",
+                heroGreeting: "Hello, World! I am",
+                heroRole1: "YouTuber",
+                heroRole2: "Designer",
+                heroBio: "Creating gaming content specifically for MooMoo.io, designing high-quality graphics, and building vibrant gaming communities. Welcome to my personal hub!",
+                ctaBtn1: "Explore My Links",
+                ctaBtn2: "Get to Know Me",
+                aboutTitle: "About Me",
+                aboutCard1Title: "Age",
+                aboutCard1Val: "20 Years Old",
+                aboutCard1Desc: "Born in the year 2006, full of energy & creativity.",
+                aboutCard2Title: "Location",
+                aboutCard2Val: "Egypt",
+                aboutCard2Desc: "Proudly showcasing Egyptian digital art & creative ideas to the world.",
+                aboutCard3Title: "My Passion",
+                aboutCard3Val: "Design & Content",
+                aboutCard3Desc: "Merging outstanding visual graphics with viral video concepts.",
+                skillsTitle: "What I Do",
+                skill1Title: "Video Production & YouTube",
+                skill1Desc: "Crafting high-energy gaming videos, specialized in MooMoo.io content. Managing full video production, scripting, and advanced editing to build a dedicated fanbase.",
+                barEdit: "Video Editing",
+                barThumb: "Thumbnail CTR Design",
+                skill2Title: "Graphic Design",
+                skill2Desc: "Creating modern visuals, channel assets, logo styles, and digital illustrations. Specializing in high-impact presentation designs and brand identity materials.",
+                barIdentity: "Brand Identity",
+                barSoftware: "Photoshop & Illustrator",
+                linksTitle: "Connect With Me",
+                linksSub: "Click any card below to join my channels, support my work, or join the server!",
+                cardYoutubeBadge: "Subscribe",
+                cardYoutubeDesc: "Watch legendary MooMoo.io gameplay, updates, strategies, and awesome gaming edits.",
+                cardVisitYT: "Visit channel",
+                cardDiscordBadge: "Join Server",
+                cardDiscordDesc: "Hangout with other gamers, designers, and talk directly with Dr_Abdo.",
+                cardVisitDiscord: "Connect here",
+                cardDirectBadge: "Chat Direct",
+                cardDirectTitle: "Discord DM",
+                cardDirectDesc: "Got a question or want a custom design? Click to copy my username (j9nh) and chat directly with me!",
+                cardVisitDirect: "Copy & Chat",
+                cardPaypalBadge: "Support Me",
+                cardPaypalDesc: "Support my content creation journey and design work directly via tip or donation.",
+                cardVisitPaypal: "Send support",
+                toastSuccess: "Username copied! Opening Discord...",
+                footerText: "© 2026 Dr_Abdo. All Rights Reserved. Powered by design passion."
+            },
+            ar: {
+                langBtnText: "English",
+                navAbout: "عني",
+                navSkills: "مهاراتي",
+                navLinks: "روابـطي",
+                heroGreeting: "أهلاً بك في عالمي! أنا",
+                heroRole1: "يوتيوبر",
+                heroRole2: "مصمم",
+                heroBio: "أقوم بصناعة محتوى ألعاب مميز خاصة للعبة MooMoo.io وتصميم جرافيك عالي الجودة وبناء مجتمعات تفاعلية. مرحباً بك في موقعي الخاص!",
+                ctaBtn1: "تصفح الروابط",
+                ctaBtn2: "تعرف عليّ أكثر",
+                aboutTitle: "نبذة عني",
+                aboutCard1Title: "العمر",
+                aboutCard1Val: "20 عاماً",
+                aboutCard1Desc: "ولدت عام 2006، مليء بالحماس والشغف لبناء أفكار رقمية جديدة.",
+                aboutCard2Title: "الموقع",
+                aboutCard2Val: "مصر",
+                aboutCard2Desc: "أفتخر بتقديم الإبداع والفن الرقمي المصري للجمهور العالمي والعربي.",
+                aboutCard3Title: "شغفي الأساسي",
+                aboutCard3Val: "التصميم والمحتوى",
+                aboutCard3Desc: "أدمج بين التصاميم البصرية المبهرة وأفكار الفيديوهات الجذابة والفريدة.",
+                skillsTitle: "ماذا أفعل",
+                skill1Title: "إنتاج الفيديوهات واليوتيوب",
+                skill1Desc: "صناعة فيديوهات ألعاب حماسية، مخصصة وبشكل أساسي للعبة MooMoo.io. أقوم بإدارة الإنتاج الكامل للفيديو والمونتاج لصناعة محتوى ترفيهي لجمهوري.",
+                barEdit: "مونتاج الفيديوهات",
+                barThumb: "تصميم الغلاف والمصغرات",
+                skill2Title: "تصميم الجرافيك",
+                skill2Desc: "ابتكار تصاميم عصرية، غلاف قنوات، شعارات مخصصة، ورسم ديجيتال مميز. متخصص بالهويات البصرية وتصميمات السوشيال ميديا.",
+                barIdentity: "الهوية البصرية",
+                barSoftware: "فوتوشوب واليستريتور",
+                linksTitle: "تواصل معي",
+                linksSub: "اضغط على أي بطاقة بالأسفل للانضمام لـ قنواتي، أو لدعم أعمالي مباشرة!",
+                cardYoutubeBadge: "اشترك الآن",
+                cardYoutubeDesc: "شاهد أقوى قيمبلاي للعبة MooMoo.io، استراتيجيات الفوز، وتصاميم ألعاب أسطورية.",
+                cardVisitYT: "زيارة القناة",
+                cardDiscordBadge: "انضم للسيرفر",
+                cardDiscordDesc: "تفاعل مع لاعبين ومصممين آخرين وتحدث مباشرة مع دكتور عبده.",
+                cardVisitDiscord: "تواصل من هنا",
+                cardDirectBadge: "محادثة مباشرة",
+                cardDirectTitle: "خاص الديسكورد",
+                cardDirectDesc: "لديك استفسار أو تود طلب تصميم خاص؟ اضغط لنسخ اسم المستخدم (j9nh) وتحدث معي مباشرة!",
+                cardVisitDirect: "نسخ الاسم والمحادثة",
+                cardPaypalBadge: "ادعمني",
+                cardPaypalDesc: "ادعم رحلتي وتطوير صناعة المحتوى وأعمال التصميم مباشرة عبر بايبال.",
+                cardVisitPaypal: "إرسال الدعم",
+                toastSuccess: "تم نسخ اسم المستخدم! جارٍ فتح ديسكورد...",
+                footerText: "© 2026 دكتور عبده. جميع الحقوق محفوظة. صُنع بكل شغف وحب."
+            }
+        };
+
+        // Custom Toast function
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            const toastText = document.getElementById('toastText');
+            if (toast && toastText) {
+                toastText.textContent = message;
+                toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+                toast.classList.add('translate-y-0', 'opacity-100');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                }, 3500);
+            }
+        }
+
+        // Copy Discord Username and Redirect
+        function copyDiscordUser(event) {
+            event.preventDefault();
+            
+            // Modern copy to clipboard using standard fallback approach
+            const tempInput = document.createElement("input");
+            tempInput.value = "j9nh";
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            // Show premium toast message
+            showToast(translations[currentLanguage].toastSuccess);
+            
+            // Redirect to user private message dashboard on Discord
+            setTimeout(() => {
+                window.open("https://discord.com/channels/@me", "_blank");
+            }, 1000);
+        }
+
+        // Function to toggle between English and Arabic
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+            
+            // Set document direction & lang attributes
+            const htmlElement = document.documentElement;
+            htmlElement.setAttribute('lang', currentLanguage);
+            htmlElement.setAttribute('dir', currentLanguage === 'ar' ? 'rtl' : 'ltr');
+
+            // Apply transition classes dynamically during change
+            document.body.classList.add('transition-all', 'duration-500');
+
+            // Apply translated texts
+            const textKeys = Object.keys(translations[currentLanguage]);
+            textKeys.forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    // Check if it's an anchor with icons to preserve them
+                    if (key === 'ctaBtn1') {
+                        element.innerHTML = `<i class="fa-solid fa-link"></i> <span>${translations[currentLanguage][key]}</span>`;
+                    } else if (key === 'ctaBtn2') {
+                        element.innerHTML = `<i class="fa-solid fa-address-card"></i> <span>${translations[currentLanguage][key]}</span>`;
+                    } else {
+                        element.textContent = translations[currentLanguage][key];
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        // Interactive Canvas Particle Engine
+        let canvas, ctx;
+        let particlesArray = [];
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 120
+        };
+
+        // Initialize particles system
+        function initParticles() {
+            canvas = document.getElementById('particleCanvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            
+            // Set correct canvas layout bounds
+            resizeCanvas();
+
+            // Track mouse cursor actions
+            window.addEventListener('mousemove', (event) => {
+                mouse.x = event.pageX; // Account for whole scroll area
+                mouse.y = event.pageY;
+            });
+
+            window.addEventListener('mouseout', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            // Populate the particles buffer
+            particlesArray = [];
+            const densityFactor = 15000; // Responsive particle balance
+            const numberOfParticles = Math.min(110, Math.floor((canvas.width * canvas.height) / densityFactor));
+            
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = Math.random() * 2 + 1.2;
+                let x = Math.random() * canvas.width;
+                let y = Math.random() * canvas.height;
+                let directionX = (Math.random() * 0.4) - 0.2;
+                let directionY = (Math.random() * 0.4) - 0.2;
+                let color = Math.random() > 0.5 ? 'rgba(139, 92, 246, 0.35)' : 'rgba(6, 182, 212, 0.35)'; // Purple or Cyan Glow
+                
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        // Particle Blueprint class
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update() {
+                // Bounce particles back on border collision
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                // Interactive push-away physics with cursor
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        const pushForce = (mouse.radius - distance) / mouse.radius;
+                        this.x -= (dx / distance) * pushForce * 2.5;
+                        this.y -= (dy / distance) * pushForce * 2.5;
+                    }
+                }
+
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        // Draw line connections between nearby particles (Constellation Effect)
+        function connectParticles() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let dx = particlesArray[a].x - particlesArray[b].x;
+                    let dy = particlesArray[a].y - particlesArray[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 115) {
+                        opacityValue = 1 - (distance / 115);
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${opacityValue * 0.12})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Dynamic fluid sizing alignment
+        function resizeCanvas() {
+            if (!canvas) return;
+            const width = window.innerWidth;
+            const height = Math.max(
+                document.body.scrollHeight,
+                document.documentElement.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.offsetHeight,
+                document.body.clientHeight,
+                document.documentElement.clientHeight
+            );
+            
+            if (canvas.width !== width || canvas.height !== height) {
+                canvas.width = width;
+                canvas.height = height;
+            }
+        }
+
+        // Central animation loop
+        function animate() {
+            if (!ctx || !canvas) return;
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connectParticles();
+        }
+    </script>
+
+    <script>
+        // Run animation loop safely after window resources loaded
+        window.onload = function() {
+            // Initiate Canvas Fluid Engine
+            initParticles();
+            animate();
+            
+            // Adjust canvas size periodically to fit layout expansions
+            setInterval(resizeCanvas, 1500);
+            
+            // Dynamic Ambient Mouse Follow Glow
+            const mouseGlow = document.getElementById('mouseGlow');
+            document.addEventListener('mousemove', (e) => {
+                if (mouseGlow) {
+                    mouseGlow.style.left = e.clientX + 'px';
+                    mouseGlow.style.top = e.clientY + 'px';
+                }
+            });
+
+            // Interactive 3D Tilt Effect for All Cards and Interactive Blocks
+            const tiltElements = document.querySelectorAll('.glass-hover, [onclick="copyDiscordUser(event)"]');
+            tiltElements.forEach(elem => {
+                elem.addEventListener('mousemove', (e) => {
+                    const rect = elem.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // x coordinate inside element
+                    const y = e.clientY - rect.top;  // y coordinate inside element
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const angleX = (centerY - y) / 12; // Maximum tilt angle on X-axis
+                    const angleY = (x - centerX) / 12; // Maximum tilt angle on Y-axis
+                    
+                    elem.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale3d(1.04, 1.04, 1.04)`;
+                    elem.style.boxShadow = `0 20px 40px rgba(139, 92, 246, 0.25)`;
+                    elem.style.transition = 'transform 0.05s ease, box-shadow 0.15s ease';
+                });
+                
+                elem.addEventListener('mouseleave', () => {
+                    elem.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    elem.style.boxShadow = '';
+                    elem.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
+                });
+            });
+
+            // Soft Page Reveal Intersection Observer
+            const sections = document.querySelectorAll('section, header');
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-12');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(sec => {
+                sec.classList.add('transition-all', 'duration-1000', 'ease-out', 'transform', 'opacity-0', 'translate-y-12');
+                sectionObserver.observe(sec);
+            });
+        }
+    </script>
+</body>
+</html>
