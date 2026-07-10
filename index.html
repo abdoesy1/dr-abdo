@@ -73,11 +73,13 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .glass-hover {
-            will-change: transform;
+        .glass:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.15);
         }
-
+        
         /* Shifting Logo Color & Glow Effects */
         @keyframes logoColorShift {
             0% { 
@@ -133,11 +135,22 @@
             background-size: 200% 200%;
             animation: logoGlow 5s ease infinite;
         }
+
+        /* Typing cursor effect */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: #06B6D4;
+        }
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: #06B6D4; }
+        }
     </style>
 </head>
-<body class="bg-brand-darker text-gray-100 font-sans overflow-x-hidden min-h-screen relative">
+<body class="bg-brand-darker text-gray-100 font-sans overflow-x-hidden min-h-screen relative select-none">
 
-    <!-- Interactive Background Particles -->
+    <!-- Interactive Background Particles Canvas -->
     <canvas id="particleCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
 
     <!-- Interactive Mouse Follower Glow (Atmospheric Neon Ambient) -->
@@ -193,7 +206,7 @@
 
     <!-- Hero Section -->
     <header class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 md:py-32 flex flex-col items-center text-center">
-        <!-- Floating badge/avatar simulation with animated RGB "A" logo -->
+        <!-- Floating avatar container with animated RGB "A" logo -->
         <div class="relative mb-8 animate-float group cursor-pointer">
             <div class="absolute -inset-1.5 rounded-full bg-gradient-to-r from-brand-purple via-brand-pink to-brand-cyan blur opacity-80 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 logo-glow"></div>
             <div class="relative w-36 h-36 md:w-44 md:h-44 rounded-full bg-brand-dark/95 flex items-center justify-center border border-white/15 overflow-hidden shadow-[inset_0_0_25px_rgba(255,255,255,0.05)]">
@@ -218,11 +231,9 @@
             <span class="bg-gradient-to-r from-white via-gray-100 to-gray-400 bg-clip-text text-transparent">Dr_Abdo</span>
         </h1>
         
-        <!-- Animated Roles text -->
-        <p class="text-lg md:text-2xl text-gray-300 font-semibold mb-6 flex items-center justify-center gap-3">
-            <span class="text-brand-cyan" id="heroRole1">YouTuber</span> 
-            <span class="text-gray-500">•</span> 
-            <span class="text-brand-pink" id="heroRole2">Designer</span>
+        <!-- Interactive Auto-Typing Role text -->
+        <p class="text-lg md:text-2xl text-gray-300 font-semibold mb-6 min-h-[40px]">
+            <span id="typedRole" class="typing-cursor text-brand-cyan"></span>
         </p>
 
         <!-- Brief pitch summary -->
@@ -251,14 +262,14 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-            <!-- Fact Card 1: Age -->
+            <!-- Fact Card 1: Experience -->
             <div class="glass p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 glass-hover">
                 <div class="w-14 h-14 rounded-xl bg-brand-purple/10 border border-brand-purple/20 flex items-center justify-center mb-6">
-                    <i class="fa-solid fa-cake-candles text-2xl text-brand-purple"></i>
+                    <i class="fa-solid fa-briefcase text-2xl text-brand-purple"></i>
                 </div>
-                <h3 class="text-lg font-bold text-gray-300 mb-2" id="aboutCard1Title">Age</h3>
-                <p class="text-3xl font-extrabold text-white mb-2" id="aboutCard1Val">20 Years Old</p>
-                <p class="text-sm text-gray-400" id="aboutCard1Desc">Born in the year 2006, full of energy & creativity.</p>
+                <h3 class="text-lg font-bold text-gray-300 mb-2" id="aboutCard1Title">Experience</h3>
+                <p class="text-3xl font-extrabold text-white mb-2" id="aboutCard1Val">2-3 Years</p>
+                <p class="text-sm text-gray-400" id="aboutCard1Desc">Working in graphic design, mastering styles & client visions.</p>
             </div>
 
             <!-- Fact Card 2: Location -->
@@ -277,8 +288,8 @@
                     <i class="fa-solid fa-wand-magic-sparkles text-2xl text-brand-pink"></i>
                 </div>
                 <h3 class="text-lg font-bold text-gray-300 mb-2" id="aboutCard3Title">My Passion</h3>
-                <p class="text-3xl font-extrabold text-white mb-2" id="aboutCard3Val" style="font-size: 1.5rem; line-height: 2rem;">Design & Content</p>
-                <p class="text-sm text-gray-400" id="aboutCard3Desc">Merging outstanding visual graphics with viral video concepts.</p>
+                <p class="text-3xl font-extrabold text-white mb-2" id="aboutCard3Val" style="font-size: 1.5rem; line-height: 2rem;">Creative Design</p>
+                <p class="text-sm text-gray-400" id="aboutCard3Desc">Designing eye-catching graphics, gorgeous YouTube thumbnails, and modern brand styles.</p>
             </div>
         </div>
     </section>
@@ -388,7 +399,7 @@
                 </div>
                 
                 <div>
-                    <h3 class="text-2xl font-black text-white group-hover:text-brand-youtube transition-colors duration-200">YouTube Channel</h3>
+                    <h3 class="text-2xl font-black text-white group-hover:text-brand-youtube transition-colors duration-200" id="cardYoutubeTitle">YouTube Channel</h3>
                     <p class="text-gray-400 text-xs mt-1" id="cardYoutubeDesc">Watch legendary MooMoo.io gameplay, updates, strategies, and awesome gaming edits.</p>
                 </div>
 
@@ -411,7 +422,7 @@
                 </div>
                 
                 <div>
-                    <h3 class="text-2xl font-black text-white group-hover:text-brand-discord transition-colors duration-200">Discord Server</h3>
+                    <h3 class="text-2xl font-black text-white group-hover:text-brand-discord transition-colors duration-200" id="cardDiscordTitle">Discord Server</h3>
                     <p class="text-gray-400 text-xs mt-1" id="cardDiscordDesc">Hangout with other gamers, designers, and talk directly with Dr_Abdo.</p>
                 </div>
 
@@ -453,16 +464,16 @@
                     <div class="w-14 h-14 rounded-xl bg-brand-cyan/15 flex items-center justify-center text-brand-cyan transition-transform group-hover:scale-110 duration-300">
                         <i class="fa-brands fa-paypal text-3xl"></i>
                     </div>
-                    <span class="text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20" id="cardPaypalBadge">Support Me</span>
+                    <span class="text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20" id="cardPaypalBadge">PayPal</span>
                 </div>
                 
                 <div>
-                    <h3 class="text-2xl font-black text-white group-hover:text-brand-cyan transition-colors duration-200">PayPal Support</h3>
-                    <p class="text-gray-400 text-xs mt-1" id="cardPaypalDesc">Support my content creation journey and design work directly via tip or donation.</p>
+                    <h3 class="text-2xl font-black text-white group-hover:text-brand-cyan transition-colors duration-200" id="cardPaypalTitle">PayPal Link</h3>
+                    <p class="text-gray-400 text-xs mt-1" id="cardPaypalDesc">Direct payments for commissions, branding designs, visual content, or professional collaborations.</p>
                 </div>
 
                 <div class="flex items-center gap-2 text-sm font-semibold text-brand-cyan mt-4">
-                    <span id="cardVisitPaypal">Send support</span>
+                    <span id="cardVisitPaypal">Send payment</span>
                     <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1.5"></i>
                 </div>
             </a>
@@ -474,7 +485,7 @@
     <footer class="relative z-10 border-t border-white/5 py-12 bg-brand-darker">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <p class="text-gray-500 text-sm" id="footerText">
-                &copy; 2026 Dr_Abdo. All Rights Reserved. Powered by design passion.
+                &copy; 2026 Dr_Abdo. All Rights Reserved. Shaping creative visions and elite gaming content.
             </p>
             
             <!-- Fast social links footer -->
@@ -496,7 +507,7 @@
         // Language state variables
         let currentLanguage = 'en';
 
-        // Translation Dictionary
+        // Translation Dictionary (100% Comprehensive Translation)
         const translations = {
             en: {
                 langBtnText: "العربية",
@@ -504,21 +515,19 @@
                 navSkills: "Skills",
                 navLinks: "My Links",
                 heroGreeting: "Hello, World! I am",
-                heroRole1: "YouTuber",
-                heroRole2: "Designer",
                 heroBio: "Creating gaming content specifically for MooMoo.io, designing high-quality graphics, and building vibrant gaming communities. Welcome to my personal hub!",
                 ctaBtn1: "Explore My Links",
                 ctaBtn2: "Get to Know Me",
                 aboutTitle: "About Me",
-                aboutCard1Title: "Age",
-                aboutCard1Val: "20 Years Old",
-                aboutCard1Desc: "Born in the year 2006, full of energy & creativity.",
+                aboutCard1Title: "Experience",
+                aboutCard1Val: "2-3 Years",
+                aboutCard1Desc: "Working in graphic design, mastering styles & client visions.",
                 aboutCard2Title: "Location",
                 aboutCard2Val: "Egypt",
                 aboutCard2Desc: "Proudly showcasing Egyptian digital art & creative ideas to the world.",
                 aboutCard3Title: "My Passion",
-                aboutCard3Val: "Design & Content",
-                aboutCard3Desc: "Merging outstanding visual graphics with viral video concepts.",
+                aboutCard3Val: "Creative Design",
+                aboutCard3Desc: "Designing eye-catching graphics, gorgeous YouTube thumbnails, and modern brand styles.",
                 skillsTitle: "What I Do",
                 skill1Title: "Video Production & YouTube",
                 skill1Desc: "Crafting high-energy gaming videos, specialized in MooMoo.io content. Managing full video production, scripting, and advanced editing to build a dedicated fanbase.",
@@ -531,20 +540,23 @@
                 linksTitle: "Connect With Me",
                 linksSub: "Click any card below to join my channels, support my work, or join the server!",
                 cardYoutubeBadge: "Subscribe",
+                cardYoutubeTitle: "YouTube Channel",
                 cardYoutubeDesc: "Watch legendary MooMoo.io gameplay, updates, strategies, and awesome gaming edits.",
                 cardVisitYT: "Visit channel",
                 cardDiscordBadge: "Join Server",
+                cardDiscordTitle: "Discord Server",
                 cardDiscordDesc: "Hangout with other gamers, designers, and talk directly with Dr_Abdo.",
                 cardVisitDiscord: "Connect here",
                 cardDirectBadge: "Chat Direct",
                 cardDirectTitle: "Discord DM",
                 cardDirectDesc: "Got a question or want a custom design? Click to copy my username (j9nh) and chat directly with me!",
                 cardVisitDirect: "Copy & Chat",
-                cardPaypalBadge: "Support Me",
-                cardPaypalDesc: "Support my content creation journey and design work directly via tip or donation.",
-                cardVisitPaypal: "Send support",
+                cardPaypalBadge: "PayPal",
+                cardPaypalTitle: "PayPal Link",
+                cardPaypalDesc: "Direct payments for commissions, branding designs, visual content, or professional collaborations.",
+                cardVisitPaypal: "Send payment",
                 toastSuccess: "Username copied! Opening Discord...",
-                footerText: "© 2026 Dr_Abdo. All Rights Reserved. Powered by design passion."
+                footerText: "© 2026 Dr_Abdo. All Rights Reserved. Shaping creative visions and elite gaming content."
             },
             ar: {
                 langBtnText: "English",
@@ -552,47 +564,48 @@
                 navSkills: "مهاراتي",
                 navLinks: "روابـطي",
                 heroGreeting: "أهلاً بك في عالمي! أنا",
-                heroRole1: "يوتيوبر",
-                heroRole2: "مصمم",
                 heroBio: "أقوم بصناعة محتوى ألعاب مميز خاصة للعبة MooMoo.io وتصميم جرافيك عالي الجودة وبناء مجتمعات تفاعلية. مرحباً بك في موقعي الخاص!",
                 ctaBtn1: "تصفح الروابط",
                 ctaBtn2: "تعرف عليّ أكثر",
                 aboutTitle: "نبذة عني",
-                aboutCard1Title: "العمر",
-                aboutCard1Val: "20 عاماً",
-                aboutCard1Desc: "ولدت عام 2006، مليء بالحماس والشغف لبناء أفكار رقمية جديدة.",
+                aboutCard1Title: "الخبرة",
+                aboutCard1Val: "2 إلى 3 سنوات",
+                aboutCard1Desc: "العمل في مجال التصميم الجرافيكي بأساليب مبتكرة واحترافية.",
                 aboutCard2Title: "الموقع",
                 aboutCard2Val: "مصر",
                 aboutCard2Desc: "أفتخر بتقديم الإبداع والفن الرقمي المصري للجمهور العالمي والعربي.",
                 aboutCard3Title: "شغفي الأساسي",
-                aboutCard3Val: "التصميم والمحتوى",
-                aboutCard3Desc: "أدمج بين التصاميم البصرية المبهرة وأفكار الفيديوهات الجذابة والفريدة.",
+                aboutCard3Val: "التصميم الإبداعي",
+                aboutCard3Desc: "تصميم جرافيك جذاب، ومصغرات يوتيوب مبهرة، وبناء هويات بصرية حديثة تسحر الأعين.",
                 skillsTitle: "ماذا أفعل",
                 skill1Title: "إنتاج الفيديوهات واليوتيوب",
                 skill1Desc: "صناعة فيديوهات ألعاب حماسية، مخصصة وبشكل أساسي للعبة MooMoo.io. أقوم بإدارة الإنتاج الكامل للفيديو والمونتاج لصناعة محتوى ترفيهي لجمهوري.",
-                barEdit: "مونتاج الفيديوهات",
+                barEdit: "موجتاه الفيديوهات",
                 barThumb: "تصميم الغلاف والمصغرات",
                 skill2Title: "تصميم الجرافيك",
                 skill2Desc: "ابتكار تصاميم عصرية، غلاف قنوات، شعارات مخصصة، ورسم ديجيتال مميز. متخصص بالهويات البصرية وتصميمات السوشيال ميديا.",
                 barIdentity: "الهوية البصرية",
                 barSoftware: "فوتوشوب واليستريتور",
                 linksTitle: "تواصل معي",
-                linksSub: "اضغط على أي بطاقة بالأسفل للانضمام لـ قنواتي، أو لدعم أعمالي مباشرة!",
+                linksSub: "اضغط على أي بطاقة بالأسفل للانضمام لـ قنواتي، أو للتعامل والتعاون التجاري المباشر!",
                 cardYoutubeBadge: "اشترك الآن",
+                cardYoutubeTitle: "قناة اليوتيوب",
                 cardYoutubeDesc: "شاهد أقوى قيمبلاي للعبة MooMoo.io، استراتيجيات الفوز، وتصاميم ألعاب أسطورية.",
                 cardVisitYT: "زيارة القناة",
                 cardDiscordBadge: "انضم للسيرفر",
+                cardDiscordTitle: "سيرفر الديسكورد",
                 cardDiscordDesc: "تفاعل مع لاعبين ومصممين آخرين وتحدث مباشرة مع دكتور عبده.",
                 cardVisitDiscord: "تواصل من هنا",
                 cardDirectBadge: "محادثة مباشرة",
                 cardDirectTitle: "خاص الديسكورد",
                 cardDirectDesc: "لديك استفسار أو تود طلب تصميم خاص؟ اضغط لنسخ اسم المستخدم (j9nh) وتحدث معي مباشرة!",
                 cardVisitDirect: "نسخ الاسم والمحادثة",
-                cardPaypalBadge: "ادعمني",
-                cardPaypalDesc: "ادعم رحلتي وتطوير صناعة المحتوى وأعمال التصميم مباشرة عبر بايبال.",
-                cardVisitPaypal: "إرسال الدعم",
+                cardPaypalBadge: "بايبال",
+                cardPaypalTitle: "حساب بايبال",
+                cardPaypalDesc: "للمعاملات المالية المباشرة، طلبات التصميم الخاصة، وتنسيق التعاون التجاري المشترك.",
+                cardVisitPaypal: "إرسال عبر بايبال",
                 toastSuccess: "تم نسخ اسم المستخدم! جارٍ فتح ديسكورد...",
-                footerText: "© 2026 دكتور عبده. جميع الحقوق محفوظة. صُنع بكل شغف وحب."
+                footerText: "© 2026 دكتور عبده. جميع الحقوق محفوظة. نصيغ الرؤى الإبداعية وأقوى محتوى ألعاب."
             }
         };
 
@@ -660,11 +673,55 @@
                     }
                 }
             });
+
+            // Re-trigger/reset typing animation text array on lang toggle
+            typingIndex = 0;
+            charIndex = 0;
+            isDeleting = false;
         }
     </script>
 
     <script>
-        // Interactive Canvas Particle Engine
+        // Typing Effect Configurations
+        const roles = {
+            en: ["MooMoo.io YouTuber", "Graphic Designer", "Community Builder"],
+            ar: ["يوتيوبر MooMoo.io", "مصمم جرافيك محترف", "مؤسس مجتمعات ألعاب"]
+        };
+        let typingIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingDelay = 100;
+        const erasingDelay = 50;
+        const newTextDelay = 2000; // Delay between roles
+        const typedRoleElement = document.getElementById("typedRole");
+
+        function typeEffect() {
+            const currentRolesList = roles[currentLanguage];
+            const currentRole = currentRolesList[typingIndex];
+
+            if (isDeleting) {
+                charIndex--;
+            } else {
+                charIndex++;
+            }
+
+            typedRoleElement.textContent = currentRole.substring(0, charIndex);
+
+            let delay = isDeleting ? erasingDelay : typingDelay;
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                delay = newTextDelay;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                typingIndex = (typingIndex + 1) % currentRolesList.length;
+                delay = 500;
+            }
+
+            setTimeout(typeEffect, delay);
+        }
+
+        // Interactive Canvas Particle Engine 
         let canvas, ctx;
         let particlesArray = [];
         const mouse = {
@@ -710,7 +767,26 @@
             }
         }
 
-        // Particle Blueprint class
+        // Dynamic Fluid Canvas resizing alignment
+        function resizeCanvas() {
+            if (!canvas) return;
+            const width = window.innerWidth;
+            const height = Math.max(
+                document.body.scrollHeight,
+                document.documentElement.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.offsetHeight,
+                document.body.clientHeight,
+                document.documentElement.clientHeight
+            );
+            
+            if (canvas.width !== width || canvas.height !== height) {
+                canvas.width = width;
+                canvas.height = height;
+            }
+        }
+
+        // Particle Blueprint class for general background flow
         class Particle {
             constructor(x, y, directionX, directionY, size, color) {
                 this.x = x;
@@ -777,34 +853,17 @@
             }
         }
 
-        // Dynamic fluid sizing alignment
-        function resizeCanvas() {
-            if (!canvas) return;
-            const width = window.innerWidth;
-            const height = Math.max(
-                document.body.scrollHeight,
-                document.documentElement.scrollHeight,
-                document.body.offsetHeight,
-                document.documentElement.offsetHeight,
-                document.body.clientHeight,
-                document.documentElement.clientHeight
-            );
-            
-            if (canvas.width !== width || canvas.height !== height) {
-                canvas.width = width;
-                canvas.height = height;
-            }
-        }
-
         // Central animation loop
         function animate() {
             if (!ctx || !canvas) return;
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
+            // Background flow particles
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
             }
+
             connectParticles();
         }
     </script>
@@ -816,6 +875,9 @@
             initParticles();
             animate();
             
+            // Initiate Typing Role sequence
+            setTimeout(typeEffect, 1000);
+
             // Adjust canvas size periodically to fit layout expansions
             setInterval(resizeCanvas, 1500);
             
@@ -829,7 +891,7 @@
             });
 
             // Interactive 3D Tilt Effect for All Cards and Interactive Blocks
-            const tiltElements = document.querySelectorAll('.glass-hover, [onclick="copyDiscordUser(event)"]');
+            const tiltElements = document.querySelectorAll('.glass-hover, [onclick="copyDiscordUser(event)"], #socials a');
             tiltElements.forEach(elem => {
                 elem.addEventListener('mousemove', (e) => {
                     const rect = elem.getBoundingClientRect();
@@ -854,7 +916,7 @@
                 });
             });
 
-            // Soft Page Reveal Intersection Observer
+            // Soft Page Reveal Intersection Observer (Scroll-in animations)
             const sections = document.querySelectorAll('section, header');
             const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
